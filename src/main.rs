@@ -1,18 +1,11 @@
 #![allow(unused)] // For beginning only
 
-use uuid::Uuid;
-
-use crate::prelude::*;
-
-mod error;
-mod prelude;
-mod team;
-mod utils;
+use expense_forecast::prelude::*;
+use expense_forecast::*;
 
 fn main() -> Result<()> {
-    print!("Expense Forecast Project");
-    let my_uuid = Uuid::new_v4();
-
-    println!("{}", my_uuid);
+    println!("Expense Forecast Project");
+    let member = team::Member::new("John Doe")?;
+    println!("{}", member.name);
     Ok(())
 }
