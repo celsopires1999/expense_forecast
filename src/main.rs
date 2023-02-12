@@ -5,7 +5,7 @@ use expense_forecast::*;
 
 fn main() -> Result<()> {
     println!("Expense Forecast Project");
-    let member = team::Member::new("John Doe")?;
+    let member = team::Member::new("John Doe", None)?;
     println!("{}", member.name);
     Ok(())
 }

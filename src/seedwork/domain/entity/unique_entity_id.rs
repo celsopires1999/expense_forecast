@@ -1,7 +1,7 @@
 use crate::prelude::*;
 use uuid::Uuid;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct UniqueEntityId {
     pub value: String,
 }
