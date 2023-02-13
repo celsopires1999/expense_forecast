@@ -10,7 +10,13 @@ pub struct TeamMember {
 }
 
 impl TeamMember {
-    pub fn new(member: Member, role: Role, id: Option<String>) -> Result<Self> {
+    pub fn new(member: Member, role: Role) -> Result<Self> {
+        let id = UniqueEntityId::new(None)?;
+
+        Ok(Self { id, member, role })
+    }
+
+    pub fn new_with_id(member: Member, role: Role, id: Option<&str>) -> Result<Self> {
         let id = UniqueEntityId::new(id)?;
 
         Ok(Self { id, member, role })
@@ -31,9 +37,9 @@ mod tests {
 
     #[test]
     fn test_should_create_team_member() -> Result<()> {
-        let member = Member::new("John Doe", None).unwrap();
+        let member = Member::new("John Doe").unwrap();
 
-        let team_member = TeamMember::new(member.clone(), Role::Analyst, None)?;
+        let team_member = TeamMember::new(member.clone(), Role::Analyst)?;
 
         assert_eq!(team_member.member, member);
         assert_eq!(team_member.role, Role::Analyst);

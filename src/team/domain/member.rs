@@ -7,8 +7,18 @@ pub struct Member {
 }
 
 impl Member {
-    pub fn new(name: impl Into<String>, id: Option<String>) -> Result<Self> {
+    pub fn new(name: impl Into<String>) -> Result<Self> {
+        let id = UniqueEntityId::new(None)?;
+
+        Ok(Member::build(name, id)?)
+    }
+
+    pub fn new_with_id(name: impl Into<String>, id: Option<&str>) -> Result<Self> {
         let id = UniqueEntityId::new(id)?;
+        Ok(Member::build(name, id)?)
+    }
+
+    fn build(name: impl Into<String>, id: UniqueEntityId) -> Result<Self> {
         let name = Member::validate_name(name)?;
 
         Ok(Self { id, name })
@@ -34,7 +44,7 @@ mod tests {
     #[test]
     fn test_should_not_create_member() {
         assert_matches!(
-            Member::new("", None),
+            Member::new(""),
             Err(Error::EntityValidationError(
                 "name must be more than 3 characters"
             ))
@@ -43,7 +53,7 @@ mod tests {
 
     #[test]
     fn test_should_create_member() {
-        let member = Member::new("John Doe", None).unwrap();
+        let member = Member::new("John Doe").unwrap();
         assert_eq!(member.name, "John Doe");
     }
 }
