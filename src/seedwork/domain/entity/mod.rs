@@ -1,1 +1,1 @@
-pub mod unique_entity_id;
+pub mod unique_entity_id_vo;

@@ -1,25 +1,34 @@
-use super::Member;
 use crate::{prelude::*, seedwork::UniqueEntityId};
+
+use super::MemberId;
 
 #[derive(Debug)]
 #[readonly::make]
 pub struct TeamMember {
     pub id: UniqueEntityId,
-    pub member: Member,
+    pub member_id: MemberId,
     pub role: Role,
 }
 
 impl TeamMember {
-    pub fn new(member: Member, role: Role) -> Result<Self> {
+    pub fn new(member_id: MemberId, role: Role) -> Result<Self> {
         let id = UniqueEntityId::new(None)?;
 
-        Ok(Self { id, member, role })
+        Ok(Self {
+            id,
+            member_id,
+            role,
+        })
     }
 
-    pub fn new_with_id(member: Member, role: Role, id: Option<&str>) -> Result<Self> {
+    pub fn new_with_id(member_id: MemberId, role: Role, id: Option<&str>) -> Result<Self> {
         let id = UniqueEntityId::new(id)?;
 
-        Ok(Self { id, member, role })
+        Ok(Self {
+            id,
+            member_id,
+            role,
+        })
     }
 }
 
@@ -33,15 +42,16 @@ pub enum Role {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use uuid::Uuid;
     // use matches::assert_matches;
 
     #[test]
     fn test_should_create_team_member() -> Result<()> {
-        let member = Member::new("John Doe").unwrap();
+        let member_id = MemberId::new(&Uuid::new_v4().to_string())?;
 
-        let team_member = TeamMember::new(member.clone(), Role::Analyst)?;
+        let team_member = TeamMember::new(member_id.clone(), Role::Analyst)?;
 
-        assert_eq!(team_member.member, member);
+        assert_eq!(team_member.member_id, member_id);
         assert_eq!(team_member.role, Role::Analyst);
 
         Ok(())
